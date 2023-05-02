@@ -7,7 +7,7 @@ import {
     TeamOutlined,
     UserOutlined,
 } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 type MenuItem = Required<MenuProps>['items'][number];
 
 function getItem(
@@ -26,10 +26,10 @@ function getItem(
 const items: MenuItem[] = [
     getItem('Option 1', '/page1', <PieChartOutlined />),
     getItem('Option 2', '/page2', <DesktopOutlined />),
-    getItem('User', 'page3', <UserOutlined />, [
-        getItem('Tom', '3'),
-        getItem('Bill', '4'),
-        getItem('Alex', '5'),
+    getItem('User', '3', <UserOutlined />, [
+        getItem('Tom', '/3/301'),
+        getItem('Bill', '/3/302'),
+        getItem('Alex', '/3/303'),
     ]),
     getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
     getItem('Files', '9', <FileOutlined />),
@@ -38,9 +38,13 @@ const items: MenuItem[] = [
 
 
 const Comp: React.FC = () => {
-    const [openKeys, setOpenKeys] = useState<string[]>();
+    const currentPath = useLocation().pathname;
+    const currentPathPrefix: string = currentPath.split('/')[1];
+
+    const [openKeys, setOpenKeys] = useState<string[]>([currentPathPrefix]);
 
     const navigateTo = useNavigate();
+
 
     const menuClick = (e: { key: string }) => {
         navigateTo(e.key);
@@ -54,7 +58,7 @@ const Comp: React.FC = () => {
 
     return <Menu
             theme="dark"
-            defaultSelectedKeys={['/page1']}
+            defaultSelectedKeys={[currentPath]}
             mode="inline"
             items={items}
             onClick={menuClick}
