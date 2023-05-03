@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
 
 const View = () => {
-    const { token } = useSelector((state: RootState) => {
+    const { token } = useSelector((state: {NumStatus: {num: number}}) => {
         return {
-            token: state.num
+            token: state.NumStatus.num
         }
     });
 
